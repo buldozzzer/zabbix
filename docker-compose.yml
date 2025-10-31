@@ -1,0 +1,27 @@
+services:
+  zabbix-agent:
+    image: ${IMAGE_ZABBIX_AGENT2}
+    container_name: ${ZABBIX_AGENT2_NAME}
+    volumes:
+      - /proc:/proc
+      - /sys:/sys
+      - /dev:/dev
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    user: 0:0
+    network_mode: "host"
+    privileged: true
+    pid: "host"
+    restart: always
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "5"
+    environment:
+      - ZBX_DEBUGLEVEL=3
+      - ZBX_SERVER_HOST=${ZBX_SERVER_HOST}
+      - ZBX_HOSTNAME=${ZBX_HOSTNAME}
+      - ZBX_HOSTNAMEITEM=${ZBX_HOSTNAMEITEM}
+      - ZBX_METADATA=${ZBX_METADATA}
+      - ZBX_METADATAITEM=${ZBX_METADATAITEM}
