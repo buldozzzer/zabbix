@@ -4,4 +4,14 @@
 wget https://repo.zabbix.com/zabbix/7.4/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.4+${ID}${VERSION_ID}_all.deb && \
 dpkg -i zabbix-release_latest_7.4+${ID}${VERSION_ID}_all.deb
 
-apt-get update && apt-get install -y zabbix-agent2
+#apt-get update && apt-get install -y zabbix-agent2
+
+HOST_NAME=$(hostname)
+
+TO_REPLACE="s/Hostname=system.hostname/Hostname=$HOST_NAME/g"
+
+sed -i -e ${TO_REPLACE} zabbix_agent2.conf_test
+
+awk 'NR==146' zabbix_agent2.conf_test
+
+cp zabbix_agent2.conf zabbix_agent2.conf_test
