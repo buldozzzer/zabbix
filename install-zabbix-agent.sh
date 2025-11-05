@@ -17,3 +17,5 @@ awk 'NR==146' zabbix_agent2.conf
 mv zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
 
 systemctl restart zabbix-agent2.service
+
+ufw allow from 109.123.238.167 to any port 10050 && ufw reload
