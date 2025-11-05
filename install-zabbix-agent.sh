@@ -10,8 +10,8 @@ HOST_NAME=$(hostname)
 
 TO_REPLACE="s/Hostname=system.hostname/Hostname=$HOST_NAME/g"
 
-sed -i -e ${TO_REPLACE} zabbix_agent2.conf_test
+sed -i -e ${TO_REPLACE} zabbix_agent2.conf
 
-awk 'NR==146' zabbix_agent2.conf_test
+awk 'NR==146' zabbix_agent2.conf
 
-cp zabbix_agent2.conf zabbix_agent2.conf_test
+mv zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
