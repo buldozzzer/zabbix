@@ -15,3 +15,5 @@ sed -i -e ${TO_REPLACE} zabbix_agent2.conf
 awk 'NR==146' zabbix_agent2.conf
 
 mv zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
+
+systemctl restart zabbix-agent2.service
