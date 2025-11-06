@@ -6,6 +6,8 @@ dpkg -i zabbix-release_latest_7.4+${ID}${VERSION_ID}_all.deb
 
 apt-get update && apt-get install -y zabbix-agent2
 
+cp zabbix_agent2.conf zabbix_agent2.conf_orig
+
 HOST_NAME=$(hostname)
 
 TO_REPLACE="s/Hostname=system.hostname/Hostname=$HOST_NAME/g"
@@ -14,7 +16,7 @@ sed -i -e ${TO_REPLACE} zabbix_agent2.conf
 
 awk 'NR==146' zabbix_agent2.conf
 
-mv zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
+cp zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
 
 systemctl restart zabbix-agent2.service
 
