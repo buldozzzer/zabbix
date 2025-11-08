@@ -1,5 +1,5 @@
 #!/bin/bash
-if apt list --installed | grep zabbix-agent2  &>/dev/null; then
+if apt-get list --installed | grep zabbix-agent2  &>/dev/null; then
     echo 'zabbix-agent2 is installed';
 else
     . /etc/os-release && \
