@@ -23,10 +23,15 @@ else
     ufw allow from 109.123.238.167 to any port 10050 && ufw reload  
 fi
 
+mkdir /etc/systemd/system/zabbix-agent2.service.d
+printf "[Service]\nUser=root\nGroup=root\n" > /etc/systemd/system/zabbix-agent2.service.d/override.conf
+cat /etc/systemd/system/zabbix-agent2.service.d/override.conf
+
 apt-get install vnstat
 
 cp service-check.conf /etc/zabbix/zabbix_agent2.d/
 cp traffic.conf /etc/zabbix/zabbix_agent2.d/
 cp cert.conf /etc/zabbix/zabbix_agent2.d/
 
+systemctl daemon-reload
 systemctl restart zabbix-agent2.service
