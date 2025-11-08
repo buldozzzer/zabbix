@@ -23,6 +23,8 @@ else
     ufw allow from 109.123.238.167 to any port 10050 && ufw reload  
 fi
 
+apt install vnstat
+
 cp service-check.conf /etc/zabbix/zabbix_agent2.d/
 cp traffic.conf /etc/zabbix/zabbix_agent2.d/
 
