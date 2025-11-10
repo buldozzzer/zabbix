@@ -9,7 +9,7 @@ def check_deps(deps: str = "vnstat") -> bool:
     return cache[deps].is_installed
 
 def check_total_traffic(interface: str = "eth0"):
-    command = ["vnstat", "-m", "-i", interface]
+    command = ["vnstat", "-m", "-i", interface, "--json"]
     try:
         output = subprocess.check_output(command, text=True)
         data = json.loads(output)
