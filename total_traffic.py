@@ -13,12 +13,12 @@ def check_total_traffic(interface: str = "eth0"):
     try:
         output = subprocess.check_output(command, text=True)
         data = json.loads(output)
-        
+        print(f"Общий трафик для {interface}: {data['interfaces'][0]['traffic']['total']['rx'] + data['interfaces'][0]['traffic']['total']['tx']} байт")
     except subprocess.CalledProcessError as e:
         logging.error(f"Ошбика исполнения vnstat: {e}")
-        print(f"Общий трафик для {interface}: {data['interfaces'][0]['traffic']['total']['rx'] + data['interfaces'][0]['traffic']['total']['tx']} bytes")
+
 if __name__ == "__main__":
     if check_deps():
-        pass
+        check_total_traffic("ens5")
     else:
         logging.error("Пакет 'vnstat' не установлен (команда 'apt install vnstat')")
