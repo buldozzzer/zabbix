@@ -28,14 +28,18 @@ def check_deps(deps: str = "vnstat") -> bool:
     return cache[deps].is_installed
 
 def check_total_traffic(interface: str = "eth0"):
-    command = ["vnstat", "-m", "--json", "--limit", "1", "-i", interface]
+    check_stat = ["vnstat", "-m", "--json", "--limit", "1", "-i", interface]
     try:
-        output = subprocess.check_output(command, text=True)
+        output = subprocess.check_output(check_stat, text=True)
         data = json.loads(output)
         total_traffic = data['interfaces'][0]['traffic']['total']['rx'] + data['interfaces'][0]['traffic']['total']['tx'] # в байтах
         logging.info(f"Общий трафик для {interface}: {bytes_to_gb(total_traffic)} TB")
         if bytes_to_gb(total_traffic) > LIMIT:
-            os.system("sudo shutdown now")
+            stop_xray = ["systemctl", "stop", "xray"]
+            result = subprocess.run(stop_xray, check=True, capture_output=True, text=True)
+            logging.info(f"Сервис 'xray' остановлен: {result.stdout}")
+            logging.info("Выключение....")
+            os.system("shutdown now")
     except subprocess.CalledProcessError as e:
         logging.error(f"Ошбика исполнения vnstat: {e}")
 
