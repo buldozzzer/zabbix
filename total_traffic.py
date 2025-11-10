@@ -6,7 +6,7 @@ import json
 import os
 
 INTERFACE = "ens5" # имя интерфейса
-LIMIT = 1999 # лимит в GB
+LIMIT = 1990 # лимит в GB
 
 logging.basicConfig(filename='/var/log/traffic.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
