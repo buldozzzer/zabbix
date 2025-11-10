@@ -5,6 +5,11 @@ import subprocess
 import json
 import os
 
+LIMIT = 1999 # лимит в GB
+
+logging.basicConfig(filename='/var/log/traffic/app.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+
 def bytes_to_tb(bytes_value):
     terabytes = bytes_value / (1024**4)
     return terabytes
@@ -22,14 +27,14 @@ def check_deps(deps: str = "vnstat") -> bool:
     return cache[deps].is_installed
 
 def check_total_traffic(interface: str = "eth0"):
-    command = ["vnstat", "-m", "-i", interface, "--json"]
+    command = ["vnstat", "-m", "--json", --"limit", "1", "-i", interface]
     try:
         output = subprocess.check_output(command, text=True)
         data = json.loads(output)
-        limit = 2199023255552
-        total_traffic = data['interfaces'][0]['traffic']['total']['rx'] + data['interfaces'][0]['traffic']['total']['tx']
-        print(f"Общий трафик для {interface}: {bytes_to_tb(total_traffic)} TB")
-        
+        total_traffic = data['interfaces'][0]['traffic']['total']['rx'] + data['interfaces'][0]['traffic']['total']['tx'] # в байтах
+        logging.info(f"Общий трафик для {interface}: {bytes_to_gb(total_traffic)} TB")
+        if bytes_to_gb(total_traffic) > LIMIT:
+            os.system("sudo shutdown now")
     except subprocess.CalledProcessError as e:
         logging.error(f"Ошбика исполнения vnstat: {e}")
 
