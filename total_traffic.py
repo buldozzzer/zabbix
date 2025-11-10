@@ -6,7 +6,7 @@ import json
 import os
 
 INTERFACE = "ens5" # имя интерфейса
-LIMIT = 1990 # лимит в GB
+LIMIT = 1930 # лимит в GB
 
 logging.basicConfig(filename='/var/log/traffic.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -33,7 +33,7 @@ def check_total_traffic(interface: str = "eth0"):
         output = subprocess.check_output(check_stat, text=True)
         data = json.loads(output)
         total_traffic = data['interfaces'][0]['traffic']['total']['rx'] + data['interfaces'][0]['traffic']['total']['tx'] # в байтах
-        logging.info(f"Общий трафик для {interface}: {bytes_to_gb(total_traffic)} TB")
+        logging.info(f"Общий трафик для {interface}: {round(bytes_to_gb(total_traffic), 2)} GB")
         if bytes_to_gb(total_traffic) > LIMIT:
             stop_xray = ["systemctl", "stop", "xray"]
             result = subprocess.run(stop_xray, check=True, capture_output=True, text=True)
