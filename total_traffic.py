@@ -7,7 +7,7 @@ import os
 
 LIMIT = 1999 # лимит в GB
 
-logging.basicConfig(filename='/var/log/traffic/app.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='/var/log/traffic.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def bytes_to_tb(bytes_value):
