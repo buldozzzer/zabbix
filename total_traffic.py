@@ -5,6 +5,7 @@ import subprocess
 import json
 import os
 
+INTERFACE = "ens5"
 LIMIT = 1999 # лимит в GB
 
 logging.basicConfig(filename='/var/log/traffic.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -40,6 +41,6 @@ def check_total_traffic(interface: str = "eth0"):
 
 if __name__ == "__main__":
     if check_deps():
-        check_total_traffic("ens5")
+        check_total_traffic(INTERFACE)
     else:
         logging.error("Пакет 'vnstat' не установлен (команда 'apt install vnstat')")
