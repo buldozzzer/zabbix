@@ -3,6 +3,19 @@ import apt
 import logging
 import subprocess
 import json
+import os
+
+def bytes_to_tb(bytes_value):
+    terabytes = bytes_value / (1024**4)
+    return terabytes
+
+def bytes_to_gb(bytes_value):
+    terabytes = bytes_value / (1024**3)
+    return terabytes
+
+def bytes_to_mb(bytes_value):
+    terabytes = bytes_value / (1024**2)
+    return terabytes
 
 def check_deps(deps: str = "vnstat") -> bool:
     cache = apt.Cache()
@@ -13,7 +26,10 @@ def check_total_traffic(interface: str = "eth0"):
     try:
         output = subprocess.check_output(command, text=True)
         data = json.loads(output)
-        print(f"Общий трафик для {interface}: {data['interfaces'][0]['traffic']['total']['rx'] + data['interfaces'][0]['traffic']['total']['tx']} байт")
+        limit = 2199023255552
+        total_traffic = data['interfaces'][0]['traffic']['total']['rx'] + data['interfaces'][0]['traffic']['total']['tx']
+        print(f"Общий трафик для {interface}: {bytes_to_tb(total_traffic)} TB")
+        
     except subprocess.CalledProcessError as e:
         logging.error(f"Ошбика исполнения vnstat: {e}")
 
