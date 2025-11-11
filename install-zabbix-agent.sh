@@ -27,6 +27,12 @@ mkdir /etc/systemd/system/zabbix-agent2.service.d
 printf "[Service]\nUser=root\nGroup=root\n" > /etc/systemd/system/zabbix-agent2.service.d/override.conf
 cat /etc/systemd/system/zabbix-agent2.service.d/override.conf
 
+ADAPTER_NAME=$(ip -br link show | awk 'NR==2' | awk '{print $1}')
+TO_REPLACE_ADAPTER="s/eth0/$ADAPTER_NAME"
+sed -i -e ${TO_REPLACE_ADAPTER} traffic.conf
+
+cat traffic.conf
+
 apt-get install vnstat
 
 cp service-check.conf /etc/zabbix/zabbix_agent2.d/
