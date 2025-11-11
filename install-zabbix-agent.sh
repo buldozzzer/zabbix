@@ -19,7 +19,7 @@ else
     awk 'NR==146' zabbix_agent2.conf
 
     cp zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
-
+    # ufw allow from 172.31.17.0/28 to 172.31.17.1 если агент и сервер на одном хосте
     ufw allow from 109.123.238.167 to any port 10050 && ufw reload  
 fi
 
