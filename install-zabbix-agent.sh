@@ -39,6 +39,7 @@ cp service-check.conf /etc/zabbix/zabbix_agent2.d/
 cp traffic.conf /etc/zabbix/zabbix_agent2.d/
 cp cert.conf /etc/zabbix/zabbix_agent2.d/
 cp logs.conf /etc/zabbix/zabbix_agent2.d/
+cp system.conf /etc/zabbix/zabbix_agent2.d/
 
 systemctl daemon-reload
 systemctl restart zabbix-agent2.service
