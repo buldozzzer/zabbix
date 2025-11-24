@@ -52,3 +52,5 @@ cp system.conf /etc/zabbix/zabbix_agent2.d/
 
 systemctl daemon-reload
 systemctl restart zabbix-agent2.service
+
+rm -f zabbix-release_latest_7.4+${ID}${VERSION_ID}_all.deb
