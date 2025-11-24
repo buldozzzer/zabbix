@@ -44,6 +44,7 @@ mv traffic.conf_orig traffic.conf
 
 apt-get install vnstat
 
+#Создание конфигов для сбора метрик
 cp service-check.conf /etc/zabbix/zabbix_agent2.d/
 cp cert.conf /etc/zabbix/zabbix_agent2.d/
 cp logs.conf /etc/zabbix/zabbix_agent2.d/
