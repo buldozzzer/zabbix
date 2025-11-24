@@ -8,17 +8,6 @@ else
 
     apt-get update && apt-get install -y zabbix-agent2
 
-    cp zabbix_agent2.conf zabbix_agent2.conf_orig
-
-    HOST_NAME=$(hostname)
-
-    TO_REPLACE="s/Hostname=system.hostname/Hostname=$HOST_NAME/g"
-
-    sed -i -e ${TO_REPLACE} zabbix_agent2.conf
-
-    awk 'NR==146' zabbix_agent2.conf
-
-    cp zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
     # ufw allow from 172.31.17.0/28 to 172.31.17.1 если агент и сервер на одном хосте
     ufw allow from 109.123.238.167 to any port 10050 && ufw reload  
 fi
@@ -27,16 +16,35 @@ mkdir /etc/systemd/system/zabbix-agent2.service.d
 printf "[Service]\nUser=root\nGroup=root\n" > /etc/systemd/system/zabbix-agent2.service.d/override.conf
 cat /etc/systemd/system/zabbix-agent2.service.d/override.conf
 
+# Подготовка zabbix_agent2.conf
+cp zabbix_agent2.conf zabbix_agent2.conf_orig
+
+HOST_NAME=$(hostname)
+
+TO_REPLACE="s/Hostname=system.hostname/Hostname=$HOST_NAME/g"
+
+sed -i -e ${TO_REPLACE} zabbix_agent2.conf
+
+awk 'NR==146' zabbix_agent2.conf
+
+mv zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
+mv zabbix_agent2.conf_orig zabbix_agent2.conf
+
+# Подготовка traffic.conf
+cp traffic.conf traffic.conf_orig
+
 ADAPTER_NAME=$(ip -br link show | awk 'NR==2' | awk '{print $1}')
 TO_REPLACE_ADAPTER="s/eth0/$ADAPTER_NAME/g"
 sed -i -e ${TO_REPLACE_ADAPTER} traffic.conf
 
 cat traffic.conf
 
+cp traffic.conf /etc/zabbix/zabbix_agent2.d/
+mv traffic.conf_orig traffic.conf
+
 apt-get install vnstat
 
 cp service-check.conf /etc/zabbix/zabbix_agent2.d/
-cp traffic.conf /etc/zabbix/zabbix_agent2.d/
 cp cert.conf /etc/zabbix/zabbix_agent2.d/
 cp logs.conf /etc/zabbix/zabbix_agent2.d/
 cp system.conf /etc/zabbix/zabbix_agent2.d/
